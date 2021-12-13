@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: do-lb-healthcheck-svc
+spec:
+  ports:
+    - port: 8090
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: do-lb-healthcheck
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: do-lb-healthcheck
+  labels:
+    app: do-lb-healthcheck
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: do-lb-healthcheck
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: do-lb-healthcheck
+    spec:
+      containers:
+      - name: do-lb-healthcheck
+        image: <IMAGE>
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: 100m
+          limits:
+            cpu: 100m
+        readinessProbe:
+          initialDelaySeconds: 15
+          periodSeconds: 15
+          tcpSocket:
+            port: 8080
+        livenessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 15
+          tcpSocket:
+            port: 8080
