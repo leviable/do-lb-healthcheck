@@ -4,6 +4,7 @@ on:
       - main
     paths:
       - '.github/*'
+      - 'config/*'
       - 'Makefile'
       - 'Dockerfile'
       - 'vendor/*'

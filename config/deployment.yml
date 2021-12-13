@@ -11,13 +11,12 @@ spec:
     app: do-lb-healthcheck
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: do-lb-healthcheck
   labels:
     app: do-lb-healthcheck
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: do-lb-healthcheck
